@@ -26,7 +26,10 @@ const ADDRESSES = [];
 // request handling
 // GET /address endpoint
 app.get('/address', (req, res) => {
+
+  // only return addresses that have not been "deleted"
   return res.status(200).json(ADDRESSES.filter(address => !address.deleted));
+  
 });
 
 
@@ -67,10 +70,12 @@ app.delete('/address/:id', validateBearerToken, (req, res) => {
   const { id } = req.params;
   const index = ADDRESSES.findIndex(address => address.id === id);
 
+  // index will be -i if it is not found in the array
   if (index === -1){
     return res.status(404).send('Address not found');
   }
 
+  // prevent actual deletion for security reasons
   ADDRESSES[index].deleted = true;
 
   return res.status(204).end();
