@@ -39,19 +39,19 @@ app.post('/address', validateBearerToken, (req, res) => {
 
   // set up and check for all required fields
   const requiredFields = ['firstName', 'lastName', 'address1', 'city', 'state', 'zip'];
-  requiredFields.forEach(field => {
+  for (const field of requiredFields) {
     if (!req.body[field]) {
       return res.status(400).send(`${field} is required`);
     }
-  });
+  }
 
   // set up and check for all length-requirement fields
   const lengths = { state: 2, zip: 5 };
-  Object.keys(lengths).forEach(field => {
+  for (const field in lengths) {
     if (req.body[field].length !== lengths[field]) {
       return res.status(400).send(`${field} must be a string of length ${lengths[field]}`);
     }
-  });
+  }
 
   // create the object and add it to our store
   const address = { 
